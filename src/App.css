@@ -1,7 +1,19 @@
 body{
     background-color: #123;
     padding: 20px;
+
 }
+
+.header1{
+    width: 500px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+    padding: 2px 0;
+    font-size: 1rem;
+  
+}
+
 .board{
     width: calc(100vh - 240px);
     max-width: calc(100vw - 40px);
@@ -9,11 +21,13 @@ body{
     grid-gap:10px;
     margin: auto;
     grid-template-columns: repeat(6, 1fr);
+        object-fit: fill;
+
 }
 .card-outer{
     perspective:1000px;
-    height: calc((100vh - 300px) / 6);
-    max-height: calc((100vw - 80px) / 6);
+    height: calc((100vh - 290px) / 6);
+    max-height: calc((100vw - 90px) / 6);
 }
 .card{
     border-radius: 5px;
@@ -23,6 +37,7 @@ body{
     transform:rotateY(180deg);
     transform-style: preserve-3d;
     transition: all 0.3s;
+    
 }
 .card .front, .card .back{
     position: absolute;
@@ -48,6 +63,6 @@ body{
     margin: 0 auto;
     text-align: center;
     color: #fff;
-    padding: 20px 0;
-    font-size: 2rem;
+    padding: 10px 0;
+    font-size: 1.5rem;
 }

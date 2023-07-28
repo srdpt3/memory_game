@@ -1,14 +1,14 @@
-import './App.css';
-import Images from './Images';
-import {useState} from "react";
-import {shuffle} from 'lodash';
+import "./App.css";
+import Images from "./Images";
+import React, { useEffect, useState } from "react";
+import { shuffle } from "lodash";
 
 function App() {
-  const [cards,setCards] = useState( shuffle([...Images, ...Images]) );
-  const [clicks,setClicks] = useState(0);
-  const [won,setWon] = useState(false);
-  const [activeCards,setActiveCards] = useState([]);
-  const [foundPairs,setFoundPairs] = useState([]);
+  const [cards, setCards] = useState(shuffle([...Images, ...Images]));
+  const [clicks, setClicks] = useState(0);
+  const [won, setWon] = useState(false);
+  const [activeCards, setActiveCards] = useState([]);
+  const [foundPairs, setFoundPairs] = useState([]);
 
   function flipCard(index) {
     if (won) {
@@ -27,7 +27,7 @@ function App() {
         if (foundPairs.length + 2 === cards.length) {
           setWon(true);
         }
-        setFoundPairs( [...foundPairs, firstIndex, secondsIndex] );
+        setFoundPairs([...foundPairs, firstIndex, secondsIndex]);
       }
       setActiveCards([...activeCards, index]);
     }
@@ -37,31 +37,67 @@ function App() {
     setClicks(clicks + 1);
   }
 
+  const [flipped, setFlipped] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => setFlipped(true), 3000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [flipped]);
+
   return (
     <div>
+      <div className="header1">
+        <h1>소은 게임</h1>
+      </div>
       <div className="board">
-        {cards.map((card,index) => {
-          const flippedToFront =  (activeCards.indexOf(index) !== -1) || foundPairs.indexOf(index) !== -1;
+        {cards.map((card, index) => {
+          const flippedToFront =
+            activeCards.indexOf(index) !== -1 ||
+            foundPairs.indexOf(index) !== -1;
           return (
-            <div className={"card-outer " + (flippedToFront ? 'flipped' : '')}
-                 onClick={() => flipCard(index)}>
-              <div className="card">
-                <div className="front">
-                  <img src={card} alt=""/>
+            <>
+              {!flipped ? (
+                <div
+                  className={"card-outer " + "flipped"}
+                  onClick={() => flipCard(index)}
+                >
+                  <div className="card">
+                    <div className="front">
+                      <img src={card} alt="" />
+                    </div>
+                    <div className="back" />
+                  </div>
                 </div>
-                <div className="back" />
-              </div>
-            </div>
+              ) : (
+                <div
+                  className={"card-outer " + (flippedToFront ? "flipped" : "")}
+                  onClick={() => flipCard(index)}
+                >
+                  <div className="card">
+                    <div className="front">
+                      <img src={card} alt="" />
+                    </div>
+                    <div className="back" />
+                  </div>
+                </div>
+              )}
+            </>
           );
         })}
       </div>
       <div className="stats">
         {won && (
-          <>You won the game! Congratulations!<br />
-            Click any card to play again.<br /><br />
+          <>
+            Congratulations 소은!
+            <br />
+            Click any card to play again.
+            <br />
+            <br />
           </>
         )}
-        Clicks: {clicks} &nbsp;&nbsp;&nbsp; Found pairs:{foundPairs.length/2}
+        클릭수: {clicks} &nbsp;&nbsp;&nbsp; 찾은갯수:{foundPairs.length / 2}
       </div>
     </div>
   );
